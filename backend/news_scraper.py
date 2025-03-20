@@ -14,3 +14,5 @@ def fetch_news_articles(company_name):
             articles.append({"title": title, "link": link})
 
     return articles
+
+
