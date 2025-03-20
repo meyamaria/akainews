@@ -19,11 +19,11 @@ st.markdown(
 )
 
 # --- Title ---
-st.title("Corporate Updates📢")
-st.subheader("Search for a company and get exciting news")
+st.title("📢 Company News & Sentiment Analysis")
+st.subheader("Search for a company and get recent news with sentiment analysis.")
 
 # --- Search Bar ---
-company = st.text_input("🔍 Enter Company Name")
+company = st.text_input("🔍 Enter Company Name", "Tesla")
 search_button = st.button("Get News")
 
 # --- Fetch News from Backend API ---
@@ -35,19 +35,18 @@ if search_button and company:
         # --- Display News Articles ---
         st.write("### 📰 Latest News for " + company)
         for article in news_data.get("articles", []):
-             st.subheader(article['title'])
-            st.write(article['summary'])
-            st.write(f"Source: {article['source']} | {article['date']}")
-            st.markdown(f"[Read More]({article['url']})")
-
-            # Hindi TTS Button
-            if st.button(f"🔊 Listen to '{article['title']}' in Hindi", key=article['title']):
-                tts_response = requests.get(f"http://127.0.0.1:5000/get_tts?text={article['summary']}")
-                if tts_response.status_code == 200:
-                    with open("output.mp3", "wb") as f:
-                        f.write(tts_response.content)
-                    st.audio("output.mp3")
-                else:
-                    st.error("TTS conversion failed!")
+            with st.container():
+                st.markdown(f"""
+                    <div class='news-card'>
+                        <h4>{article['title']}</h4>
+                        <p>{article['summary']}</p>
+                        <i>Source: {article['source']} | {article['date']}</i>
+                        <br>
+                        <a href='{article['url']}' target='_blank'>Read More</a>
+                        <br><br>
+                        <button class='audio-btn' onclick="window.location.href='http://127.0.0.1:5000/get_tts?text={article['summary']}'">🔊 Listen in Hindi</button>
+                    </div>
+                    <br>
+                """, unsafe_allow_html=True)
     else:
         st.error("❌ Unable to fetch news. Please try again later.")
