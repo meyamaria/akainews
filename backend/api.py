@@ -3,20 +3,20 @@ from tts_generator import generate_tts
 
 app = Flask(__name__)
 
-@app.route('/fetch_news', methods=['GET'])
+@app.route('/news_scraper', methods=['GET'])
 def get_news():
     company = request.args.get('company')
     articles = fetch_news_articles(company)
     return jsonify(articles)
 
-@app.route('/analyze_sentiment', methods=['POST'])
+@app.route('/sentiment_analysis', methods=['POST'])
 def get_sentiment():
     data = request.json
     articles = data['articles']
     sentiments = compare_sentiments(articles)
     return jsonify(sentiments.to_dict(orient='records'))
 
-@app.route("/get_tts", methods=["GET"])
+@app.route("/tts_generator", methods=["GET"])
 def get_tts():
     text = request.args.get("text", "")
     if not text:
