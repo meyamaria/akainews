@@ -19,16 +19,24 @@ if st.button("Analyze News"):
                 st.markdown(f"- [{article['title']}]({article['link']})")
             
             with st.spinner("Performing sentiment analysis..."):
-                sentiments = requests.post("http://127.0.0.1:5000/analyze_sentiment", json={"articles": articles}).json()
+                sentiments = requests.post("http://127.0.0.1:5000/sentiment_analysis", json={"articles": articles}).json()
             
             st.write("### 📈 Sentiment Analysis Results")
             st.dataframe(sentiments)
 
             text = " ".join([a['title'] for a in articles])
             with st.spinner("Generating Hindi audio..."):
-                audio = requests.post("http://127.0.0.1:5000/generate_tts", json={"text": text}).json()
+                audio = requests.post("http://127.0.0.1:5000/tts_generator", json={"text": text}).json()
+                audio_url = f"http://127.0.0.1:5000/{audio['audio']}"
             
-            st.write("### 🔊 Listen to Summary in Hindi")
-            st.audio(audio['audio'])
+            st.write("### 🔊 Listen to Titles in Hindi")
+            st.audio(audio_url)
+
         else:
             st.warning("No news articles found. Try another company.")
+
+
+
+
+
+
