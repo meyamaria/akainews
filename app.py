@@ -41,11 +41,10 @@ if st.button("Find News"):
                 # ).json()
                 # audio_url = f"http://127.0.0.1:5000/{audio['audio']}"
                 audio = get_tts(text)
-                # audio_url = "backend/" + audio["audio"]
+                audio_url = "backend/" + audio["audio"]
 
             st.write("### 🔊 Listen to Titles in Hindi")
-            st.audio(audio, format="audio/mp3")
+            st.audio(audio_url)
 
         else:
             st.warning("No news articles found. Try another company.")
-
