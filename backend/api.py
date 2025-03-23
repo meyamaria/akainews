@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify, send_file
-from tts_generator import generate_tts
+from flask import Flask, request, jsonify
+from tts_generator import generate_tts, returnDir
+from news_scraper import fetch_news_articles
+from comparative_analysis import compare_sentiments
 
 app = Flask(__name__)
 
-@app.route('/news_scraper', methods=['GET'])
+@app.route('/fetch_news', methods=['GET'])
 def get_news():
     company = request.args.get('company')
     articles = fetch_news_articles(company)
@@ -16,14 +18,24 @@ def get_sentiment():
     sentiments = compare_sentiments(articles)
     return jsonify(sentiments.to_dict(orient='records'))
 
-@app.route("/tts_generator", methods=["GET"])
+@app.route("/tts_generator", methods=["POST"])
 def get_tts():
-    text = request.args.get("text", "")
+    data = request.json
+    text = data['text']
+    print(text)
     if not text:
         return {"error": "No text provided"}, 400
     
     audio_file = generate_tts(text)
-    return send_file(audio_file, as_attachment=True)
+    return audio_file
+
+@app.route("/audio/<filename>")
+def serve_audio(filename):
+    return returnDir(filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
