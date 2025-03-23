@@ -1,0 +1,80 @@
+
+Installation
+1) Clone the repository:
+    git clone https://github.com/meyamaria/akainews.git
+    cd akainews
+2) Create and activate a virtual environment (optional but recommended):
+    python -m venv venv
+    # On Windows
+    venv\Scripts\activate
+    # On macOS/Linux
+    source venv/bin/activate
+3) Install the required dependencies:
+    pip install -r requirements.txt
+
+Running the Application
+1) Start the Flask backend server:
+    cd backend
+    python api.py
+2) In a new terminal, start the Streamlit frontend:
+    streamlit run app.py
+
+Model Details
+1) Sentiment Analysis
+    Model: NLTK's VADER (Valence Aware Dictionary and sEntiment Reasoner)
+    Purpose: Analyzes the sentiment of news headlines
+    Classification: Categorizes text as positive, negative, or neutral based on compound score
+    Implementation: Located in backend/sentiment_analysis.py
+2) Text Translation
+    Library: Google Translate API (via googletrans Python package)
+    Purpose: Translates English news headlines to Hindi
+    Implementation: Integrated in the TTS generator (backend/tts_generator.py)
+3) Text-to-Speech
+    Library: Google Text-to-Speech (gTTS)
+    Purpose: Converts translated Hindi text to audio
+    Output: MP3 audio file
+    Implementation: Located in backend/tts_generator.py
+
+API Development
+The backend is built using Flask and exposes the following RESTful API endpoints:
+1. Fetch News API
+    Endpoint: /fetch_news
+    Method: GET
+    Parameters: company (name of the company to fetch news for)
+    Response: JSON array of news articles with titles and links
+2. Sentiment Analysis API
+    Endpoint: /sentiment_analysis
+    Method: POST
+    Request Body: JSON object containing an array of articles
+    Response: JSON array with sentiment counts (positive, negative, neutral)
+3. Text-to-Speech API
+    Endpoint: /tts_generator
+    Method: POST
+    Request Body: JSON object containing text to convert
+    Response: JSON object with audio file path
+4. Audio Serving API
+    Endpoint: /audio/<filename>
+    Method: GET
+    Response: Audio file (MIME type: audio/mpeg)
+
+Testing APIs with Postman
+    Download and install Postman
+    Create a new request with the appropriate method (GET/POST)
+    Enter the API URL (e.g., http://127.0.0.1:5000/fetch_news?company=Tesla)
+    For POST requests, go to the "Body" tab, select "raw" and "JSON", and enter the required JSON data
+    Click "Send" to execute the request and view the response
+
+Third-Party APIs
+1) Google Translate API (via googletrans library)
+    Purpose: Translates news headlines from English to Hindi
+    Integration: Used in the TTS generator component
+    Usage: No API key required for the current implementation
+2) Google Text-to-Speech API (via gTTS library)
+    Purpose: Converts translated Hindi text to speech
+    Integration: Used in the TTS generator component
+    Usage: No API key required
+3) Bing News Search
+    Purpose: Web scraping for news articles
+    Integration: Used in the news scraper component
+    Note: The current implementation uses web scraping instead of the official Bing News API
+

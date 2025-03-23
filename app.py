@@ -1,14 +1,14 @@
 import streamlit as st
 import requests
 
-st.set_page_config(page_title="News Sentiment Analysis", layout="wide")
+st.set_page_config(page_title="News Analysis", layout="wide")
 
-st.title("📊 Company News Sentiment Analysis")
+st.title("Top news of any company of your choice")
 
 # Company Name Input
 company = st.text_input("Enter Company Name", placeholder="e.g., Tesla, Google")
 
-if st.button("Analyze News"):
+if st.button("Find News"):
     if company:
         with st.spinner("Fetching news..."):
             articles = requests.get(f"http://127.0.0.1:5000/fetch_news?company={company}").json()
